@@ -22,7 +22,7 @@ import com.mfluent.tools.protocol.annotations.RequestPDU;
 import com.mfluent.tools.protocol.annotations.RequestPDU.Method;
 import com.mfluent.tools.protocol.annotations.ResponsePDU;
 import com.mfluent.tools.protocol.helpers.GsonHelper;
-import com.mfluent.tools.protocol.http.HttpConstants;
+//import com.mfluent.tools.protocol.http.HttpConstants;
 
 public class Documentor {
 
@@ -40,10 +40,9 @@ public class Documentor {
     }
 
     /* @formatter:off */
+    // TODO: these classes need to be passed in
     private List<Class<?>> pdusToDocument = new ArrayList<Class<?>>(Arrays.asList(
-                // TODO: these classes need to be passed in
-                LoginRequest.class,
-            
+                 Object.class // place holder to make compile. This must be done differently
             ));
     /* @formatter:on */
 
