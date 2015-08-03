@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 
 /**
  * this annotation is used to identify a response PDU.
- * 
+ *
  * @author jrenkel
  */
 

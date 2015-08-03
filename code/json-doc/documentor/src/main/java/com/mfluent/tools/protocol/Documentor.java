@@ -1,11 +1,5 @@
-
 package com.mfluent.tools.protocol;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.InputStreamReader;
-import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.lang.reflect.ParameterizedType;
@@ -22,137 +16,82 @@ import com.mfluent.tools.protocol.annotations.RequestPDU;
 import com.mfluent.tools.protocol.annotations.RequestPDU.Method;
 import com.mfluent.tools.protocol.annotations.ResponsePDU;
 import com.mfluent.tools.protocol.helpers.GsonHelper;
-//import com.mfluent.tools.protocol.http.HttpConstants;
 
 public class Documentor {
 
-    String outputPath = "doc/protocol.md";
 
-    private final BufferedReader in;
-
-    private final PrintStream console;
-
-    private PrintStream out;
+    private DocumentorDriver driver;
 
     private GsonHelper gson = GsonHelper.getInstance();
     {
-        this.gson.setPrettyPrinting(true);
+        gson.setPrettyPrinting(true);
     }
-
-    /* @formatter:off */
-    // TODO: these classes need to be passed in
-    private List<Class<?>> pdusToDocument = new ArrayList<Class<?>>(Arrays.asList(
-                 Object.class // place holder to make compile. This must be done differently
-            ));
-    /* @formatter:on */
 
     /* @formatter:off */
     private Map<Class<? extends Object>, List<? extends Object>> samples = new HashMap<Class<? extends Object>, List<? extends Object>>();
     /* @formatter:on */
 
-    private Map<Class<? extends Object>, TypeParser<?>> specialTypes = new HashMap<Class<? extends Object>, TypeParser<?>>();
+    private Map<Class<? extends Object>, TypeParser<?>>          specialTypes   = new HashMap<Class<? extends Object>, TypeParser<?>>();
     {
         TypeParser<?> typeParser = new BooleanParser();
-        this.specialTypes.put(boolean.class, typeParser);
-        this.specialTypes.put(Boolean.class, typeParser);
+        specialTypes.put(boolean.class, typeParser);
+        specialTypes.put(Boolean.class, typeParser);
 
         typeParser = new CharacterParser();
-        this.specialTypes.put(char.class, typeParser);
-        this.specialTypes.put(Character.class, typeParser);
+        specialTypes.put(char.class, typeParser);
+        specialTypes.put(Character.class, typeParser);
 
         typeParser = new ByteParser();
-        this.specialTypes.put(byte.class, typeParser);
-        this.specialTypes.put(Byte.class, typeParser);
+        specialTypes.put(byte.class, typeParser);
+        specialTypes.put(Byte.class, typeParser);
 
         typeParser = new ShortParser();
-        this.specialTypes.put(short.class, typeParser);
-        this.specialTypes.put(Short.class, typeParser);
+        specialTypes.put(short.class, typeParser);
+        specialTypes.put(Short.class, typeParser);
 
         typeParser = new IntegerParser();
-        this.specialTypes.put(int.class, typeParser);
-        this.specialTypes.put(Integer.class, typeParser);
+        specialTypes.put(int.class, typeParser);
+        specialTypes.put(Integer.class, typeParser);
 
         typeParser = new LongParser();
-        this.specialTypes.put(long.class, typeParser);
-        this.specialTypes.put(Long.class, typeParser);
+        specialTypes.put(long.class, typeParser);
+        specialTypes.put(Long.class, typeParser);
 
         typeParser = new FloatParser();
-        this.specialTypes.put(float.class, typeParser);
-        this.specialTypes.put(Float.class, typeParser);
+        specialTypes.put(float.class, typeParser);
+        specialTypes.put(Float.class, typeParser);
 
         typeParser = new DoubleParser();
-        this.specialTypes.put(double.class, typeParser);
-        this.specialTypes.put(Double.class, typeParser);
+        specialTypes.put(double.class, typeParser);
+        specialTypes.put(Double.class, typeParser);
 
         typeParser = new VoidParser();
-        this.specialTypes.put(void.class, typeParser);
-        this.specialTypes.put(Void.class, typeParser);
+        specialTypes.put(void.class, typeParser);
+        specialTypes.put(Void.class, typeParser);
 
         typeParser = new StringParser();
-        this.specialTypes.put(String.class, typeParser);
+        specialTypes.put(String.class, typeParser);
     }
 
-    public static void main(String[] args) throws Exception {
-        new Documentor().run(args);
-    }
-
-    private Documentor() throws Exception {
+    public Documentor() throws Exception {
         super();
 
-        InputStreamReader inReader = new InputStreamReader(System.in, "utf-8");
-        this.in = new BufferedReader(inReader);
-        this.console = System.out;
     }
 
-    public void run(String[] args) throws Exception {
-
-        if (args != null) {
-            if (args.length > 0) {
-                this.outputPath = args[0];
-            }
-        }
-
-        this.console.println("generating briteIM client server protocol markdown documentation to: " + this.outputPath);
-
-        File outputFile = new File(this.outputPath);
-
-        if (outputFile.exists()) {
-            String response = "";
-
-            while (response != null && !response.equalsIgnoreCase("y")) {
-                this.console.println(this.outputPath + " exists. overwrite (y/n)? ");
-                response = this.in.readLine();
-                if (response != null && response.equalsIgnoreCase("n")) {
-                    this.console.println("protocol documentation will NOT be generated!!!");
-                    return;
-                }
-            }
-            this.console.println(this.outputPath + " will be overwritten!");
-        } else {
-            outputFile.createNewFile();
-        }
-
-        FileOutputStream outStream = new FileOutputStream(outputFile);
-        this.out = new PrintStream(outStream);
-
-        String text = "# The briteIM Client-Server Protocol";
-        emitLine(text);
-        emitLine();
-
-        for (int i = 0; i < this.pdusToDocument.size(); i += 1) {
-            Class<?> pdu = this.pdusToDocument.get(i);
-            documentPDU(pdu);
-        }
-
-        if (this.out != null) {
-            this.out.close();
-        }
+    /**
+     * set the documentor driver
+     *
+     * @param driver
+     *            the driver to set
+     */
+    public void setDriver(DocumentorDriver driver) {
+        this.driver = driver;
     }
 
-    private void documentPDU(Class<?> pdu) {
+    public void documentPDU(Class<?> pdu) {
         String pduName = pdu.getSimpleName();
 
-        this.console.println("documenting: " + pduName);
+        driver.printToConsole("documenting: " + pduName);
 
         emitLine("## " + pduName);
         emitLine();
@@ -207,7 +146,7 @@ public class Documentor {
                 if (pathParameters != null) {
                     int pathParametersLength = pathParameters.length;
                     if (pathParametersLength % 2 != 0) {
-                        this.console.println("pathParameters length is odd, will reduce by 1, for class: " + pduName);
+                        driver.printToConsole("pathParameters length is odd, will reduce by 1, for class: " + pduName);
                         pathParametersLength -= 1;
                     }
                     if (pathParametersLength > 0) {
@@ -228,7 +167,7 @@ public class Documentor {
                 if (requestParameters != null) {
                     int requestParametersLength = requestParameters.length;
                     if (requestParametersLength % 2 != 0) {
-                        this.console.println("requestParameters length is odd, will reduce by 1, for class: " + pduName);
+                        driver.printToConsole("requestParameters length is odd, will reduce by 1, for class: " + pduName);
                         requestParametersLength -= 1;
                     }
                     if (requestParametersLength > 0) {
@@ -249,7 +188,7 @@ public class Documentor {
                 if (postParts != null) {
                     int postPartsLength = postParts.length;
                     if (postPartsLength % 2 != 0) {
-                        this.console.println("multipartPostParts length is odd, will reduce by 1, for class: " + pduName);
+                        driver.printToConsole("multipartPostParts length is odd, will reduce by 1, for class: " + pduName);
                         postPartsLength -= 1;
                     }
                     if (postPartsLength > 0) {
@@ -265,11 +204,11 @@ public class Documentor {
                 }
             }
 
-            Class<? extends BaseResponse>[] responses = requestAnnotation.response();
+            Class<?>[] responses = requestAnnotation.response();
             if (responses != null) {
                 int responsesLength = responses.length;
                 if (responsesLength > 0) {
-                    Class<? extends BaseResponse> response = responses[0];
+                    Class<?> response = responses[0];
                     addToList(response);
                     if (responsesLength == 1) {
                         emitLine("Response: " + response.getSimpleName());
@@ -395,7 +334,7 @@ public class Documentor {
                     try {
                         value = field.get(null);
                     } catch (IllegalArgumentException | IllegalAccessException e) {
-                        this.console.println("exception accessing value of static field " + fieldName + ": " + e.getMessage());
+                        driver.printToConsole("exception accessing value of static field " + fieldName + ": " + e.getMessage());
                         continue;
                     }
                     if (value == null) {
@@ -409,7 +348,7 @@ public class Documentor {
 
         if ((requestAnnotation != null || responseAnnotation != null) && (requestAnnotation == null || !requestAnnotation.noSample())) {
             Object sample = getSample(pdu);
-            String json = this.gson.toJson(sample);
+            String json = gson.toJson(sample);
             emitLine("Sample:");
             emitLine();
             emitLine("```");
@@ -419,26 +358,24 @@ public class Documentor {
 
     }
 
-    private void addToList(Class<?> clazz) {
+    public void addToList(Class<?> clazz) {
         if (isSpecialType(clazz) || clazz.isEnum() || (clazz.getModifiers() & Modifier.ABSTRACT) != 0) {
             return;
         }
-        if (!this.pdusToDocument.contains(clazz)) {
-            this.pdusToDocument.add(clazz);
-        }
+        driver.addPduToDocument(clazz);
     }
 
-    private <T>T getSample(Class<T> clazz) {
+    private <T> T getSample(Class<T> clazz) {
         return getSample(clazz, 0);
     }
 
-    private <T extends Object>T getSample(Class<T> clazz, int index) {
+    private <T extends Object> T getSample(Class<T> clazz, int index) {
         T sample = null;
         @SuppressWarnings("unchecked")
-        List<T> sampleList = (List<T>) this.samples.get(clazz);
+        List<T> sampleList = (List<T>) samples.get(clazz);
         if (sampleList == null) {
             sampleList = new ArrayList<T>();
-            this.samples.put(clazz, sampleList);
+            samples.put(clazz, sampleList);
         }
 
         while (index >= sampleList.size()) {
@@ -449,12 +386,12 @@ public class Documentor {
         return sample;
     }
 
-    private <T>T makeSample(Class<T> clazz, int index) {
+    private <T> T makeSample(Class<T> clazz, int index) {
         T sample = null;
         try {
             sample = clazz.newInstance();
         } catch (InstantiationException | IllegalAccessException e) {
-            this.console.println("exception creating sample: " + e.getMessage());
+            driver.printToConsole("exception creating sample: " + e.getMessage());
             return sample;
         }
 
@@ -485,7 +422,7 @@ public class Documentor {
                 field.setAccessible(true);
                 field.set(sample, value);
             } catch (IllegalArgumentException | IllegalAccessException e) {
-                this.console.println("exception assigning value to sample: " + e.getMessage());
+                driver.printToConsole("exception assigning value to sample: " + e.getMessage());
             }
         }
 
@@ -504,16 +441,11 @@ public class Documentor {
             if (descriptionAnnotation != null) {
                 String sampleString = getSampleString(descriptionAnnotation, index);
                 if (sampleString != null) {
-                    TypeParser<?> typeParser = this.specialTypes.get(fieldType);
+                    TypeParser<?> typeParser = specialTypes.get(fieldType);
                     try {
                         value = typeParser.parse(sampleString);
                     } catch (NumberFormatException e) {
-                        System.err.println("NumberFormatException parsing sample: "
-                                + sampleString
-                                + " for "
-                                + fieldType.getCanonicalName()
-                                + " : "
-                                + descriptionAnnotation);
+                        System.err.println("NumberFormatException parsing sample: " + sampleString + " for " + fieldType.getCanonicalName() + " : " + descriptionAnnotation);
                         throw e;
                     }
                 }
@@ -564,7 +496,7 @@ public class Documentor {
     }
 
     private boolean isSpecialType(Class<?> clazz) {
-        if (this.specialTypes.containsKey(clazz)) {
+        if (specialTypes.containsKey(clazz)) {
             return true;
         }
         return false;
@@ -583,16 +515,16 @@ public class Documentor {
 
         for (int i = 0; i < fields.size(); i += 1) {
             Field field = fields.get(i);
-            //            String fieldName = field.getName();
+            // String fieldName = field.getName();
             if (field.getAnnotation(Deprecated.class) != null) {
-                //                this.console.println(fieldName + " is deprecated");
+                // driver.printToConsole(fieldName + " is deprecated");
                 fields.remove(i);
                 i -= 1;
                 continue;
             }
             int modifiers = field.getModifiers();
             if ((modifiers & Modifier.TRANSIENT) != 0) {
-                //                this.console.println(fieldName + " is transient");
+                // driver.printToConsole(fieldName + " is transient");
                 fields.remove(i);
                 i -= 1;
                 continue;
@@ -604,7 +536,7 @@ public class Documentor {
 
     /**
      * get the item type, T, of a field whose class implements List<T>, or an extension thereof.
-     * 
+     *
      * @param field
      *            the field whose class (potentially) implements List<T> or an extension thereof.
      * @return T, or null if the class of the field does not implement List<T> or an extension thereof
@@ -649,8 +581,7 @@ public class Documentor {
         }
 
         /*
-         * no, maybe a superclass is or implements List<T>; go looking for it
-         * first the type has to be a class
+         * no, maybe a superclass is or implements List<T>; go looking for it first the type has to be a class
          */
         if (!(type instanceof Class)) {
             return null;
@@ -700,21 +631,15 @@ public class Documentor {
     }
 
     private void emit(String text) {
-        this.out.print(sanitize(text));
+        driver.emit(text);
     }
 
     private void emitLine() {
-        this.out.println();
+        driver.emitLine();
     }
 
     private void emitLine(String text) {
-        this.out.println(sanitize(text));
-    }
-
-    private String sanitize(String string) {
-        String result = string.replaceAll("\\&", "&amp;");
-        result = result.replaceAll("\\<", "&lt;");
-        return result;
+        driver.emitLine(text);
     }
 
     private static interface TypeParser<T> {

@@ -6,11 +6,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-import com.mfluent.tools.protocol.BaseResponse;
-
 /**
  * this annotation is used to identify a request PDU.
- * 
+ *
  * @author jrenkel
  */
 
@@ -26,7 +24,7 @@ public @interface RequestPDU {
 
     Method[] method() default {Method.POST};
 
-    String[] path();
+    String[] path() default {};
 
     String[] pathParameters() default {};  // pairs of: path parameter name; description
 
@@ -34,7 +32,7 @@ public @interface RequestPDU {
 
     String[] multipartPostParts() default {};   // pairs of: part name, description of part
 
-    Class<? extends BaseResponse>[] response() default {};
+    Class<?>[] response() default {};
 
     boolean noSample() default false; // set to true if no sample should be documented
 
