@@ -65,6 +65,15 @@ Date|userSince|userSince|August 1, 2015|The user's enrollment date
 
 ## Build Instructions
 
+### Prerequisites
+
+You need the following installed and available in your $PATH:
+
+* Java 7 (http://java.oracle.com)
+* Apache maven 3.3 or greater (http://maven.apache.org/)
+
+### Building
+
 This project requires Java and Maven.
 
 `````
@@ -195,3 +204,7 @@ public class ClassListDriver extends ClassListDriverBase {
 	*  http://www.itu.int/rec/T-REC-Z.120-201102-I/en
 
 
+
+## Related Projects
+
+* [Swagger](https://github.com/swagger-api/swagger-core)
