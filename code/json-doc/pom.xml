@@ -3,10 +3,10 @@
 
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.mfluent.tools</groupId>
+	<groupId>com.yepher.tools</groupId>
 	<artifactId>json-doc</artifactId>
 	<packaging>pom</packaging>
-	<version>1.0-SNAPSHOT</version>
+	<version>0.1-SNAPSHOT</version>
 	<name>json-doc</name>
 	<url>http://maven.apache.org</url>
 
@@ -124,13 +124,13 @@
 		<dependencies>
 			<!-- Locally build dependencies -->
 			<dependency>
-				<groupId>com.mfluent.tools</groupId>
+				<groupId>com.yepher.tools</groupId>
 				<artifactId>annotations</artifactId>
 				<version>1.0-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
-				<groupId>com.mfluent.tools</groupId>
+				<groupId>com.yepher.tools</groupId>
 				<artifactId>documentor</artifactId>
 				<version>1.0-SNAPSHOT</version>
 			</dependency>

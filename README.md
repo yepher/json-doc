@@ -94,12 +94,12 @@ The basic idea is:
 
 ```
 <dependency>
-	<groupId>com.mfluent.tools</groupId>
+	<groupId>com.yepher.tools</groupId>
 	<artifactId>annotations</artifactId>
 </dependency>
 
 <dependency>
-	<groupId>com.mfluent.tools</groupId>
+	<groupId>com.yepher.tools</groupId>
 	<artifactId>documentor</artifactId>
 </dependency>
 ```

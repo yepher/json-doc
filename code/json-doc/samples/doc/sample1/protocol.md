@@ -22,7 +22,7 @@ Sample:
     "userName": "chris",
     "firstName": "Chris",
     "lastName": "Wilson",
-    "userSince": "Aug 7, 2015 1:36:35 PM"
+    "userSince": "Sep 15, 2015 5:44:03 PM"
   },
   "password": "********"
 }
