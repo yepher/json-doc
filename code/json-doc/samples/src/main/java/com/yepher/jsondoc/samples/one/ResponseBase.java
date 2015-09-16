@@ -3,7 +3,7 @@ package com.yepher.jsondoc.samples.one;
 import lombok.Data;
 
 import com.google.gson.annotations.SerializedName;
-import com.yepher.tools.protocol.annotations.Description;
+import com.yepher.jsondoc.annotations.Description;
 
 /**
  * All response objects must be an extension of this BaseResponse

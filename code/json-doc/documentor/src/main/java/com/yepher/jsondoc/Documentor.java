@@ -12,10 +12,10 @@ import java.util.Map;
 
 import com.google.gson.annotations.SerializedName;
 import com.yepher.jsondoc.helpers.GsonHelper;
-import com.yepher.tools.protocol.annotations.Description;
-import com.yepher.tools.protocol.annotations.RequestPDU;
-import com.yepher.tools.protocol.annotations.ResponsePDU;
-import com.yepher.tools.protocol.annotations.RequestPDU.Method;
+import com.yepher.jsondoc.annotations.Description;
+import com.yepher.jsondoc.annotations.RequestPDU;
+import com.yepher.jsondoc.annotations.ResponsePDU;
+import com.yepher.jsondoc.annotations.RequestPDU.Method;
 
 public class Documentor {
 

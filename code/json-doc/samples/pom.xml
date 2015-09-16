@@ -4,18 +4,18 @@
 	<parent>
 		<groupId>com.yepher.jsondoc</groupId>
 		<artifactId>json-doc</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
+		<version>0.0.2</version>
 	</parent>
 	<artifactId>samples</artifactId>
 	
 	<dependencies>
 		<dependency>
-			<groupId>com.yepher.tools</groupId>
+			<groupId>com.yepher.jsondoc</groupId>
 			<artifactId>annotations</artifactId>
 		</dependency>
 
 		<dependency>
-			<groupId>com.yepher.tools</groupId>
+			<groupId>com.yepher.jsondoc</groupId>
 			<artifactId>documentor</artifactId>
 		</dependency>
 	</dependencies>

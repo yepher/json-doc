@@ -1,8 +1,8 @@
 package com.yepher.jsondoc.samples.one;
 
-import com.yepher.tools.protocol.annotations.Description;
-import com.yepher.tools.protocol.annotations.RequestPDU;
-import com.yepher.tools.protocol.annotations.RequestPDU.Method;
+import com.yepher.jsondoc.annotations.Description;
+import com.yepher.jsondoc.annotations.RequestPDU;
+import com.yepher.jsondoc.annotations.RequestPDU.Method;
 
 import lombok.Data;
 

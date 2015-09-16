@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.yepher.jsondoc</groupId>
 		<artifactId>json-doc</artifactId>
-		<version>0.0.2-SNAPSHOT</version>
+		<version>0.0.2</version>
 	</parent>
 	<artifactId>documentor</artifactId>
 	<name>json-doc documentor</name>
@@ -14,7 +14,7 @@
 
 		<!-- Locally built dependencies -->
 		<dependency>
-			<groupId>com.yepher.tools</groupId>
+			<groupId>com.yepher.jsondoc</groupId>
 			<artifactId>annotations</artifactId>
 		</dependency>
 

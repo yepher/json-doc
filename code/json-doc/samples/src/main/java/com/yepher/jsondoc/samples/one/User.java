@@ -2,7 +2,7 @@ package com.yepher.jsondoc.samples.one;
 
 import java.util.Date;
 
-import com.yepher.tools.protocol.annotations.Description;
+import com.yepher.jsondoc.annotations.Description;
 
 import lombok.Data;
 

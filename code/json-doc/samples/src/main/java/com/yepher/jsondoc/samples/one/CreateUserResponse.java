@@ -1,7 +1,7 @@
 package com.yepher.jsondoc.samples.one;
 
-import com.yepher.tools.protocol.annotations.Description;
-import com.yepher.tools.protocol.annotations.ResponsePDU;
+import com.yepher.jsondoc.annotations.Description;
+import com.yepher.jsondoc.annotations.ResponsePDU;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;

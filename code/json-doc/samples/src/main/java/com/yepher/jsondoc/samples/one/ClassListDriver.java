@@ -7,7 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import com.yepher.tools.protocol.ClassListDriverBase;
+import com.yepher.jsondoc.ClassListDriverBase;
 
 public class ClassListDriver extends ClassListDriverBase {
 
