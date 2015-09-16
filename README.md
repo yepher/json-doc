@@ -36,7 +36,7 @@ String|password|password|********|The user's requested password
 
 Sample:
 
-```
+```json
 {
   "user": {
     "userName": "chris",
@@ -76,7 +76,7 @@ You need the following installed and available in your $PATH:
 
 This project requires Java and Maven.
 
-`````
+`````bash
 cd code/json-doc/
 mvn clean install
 
@@ -92,14 +92,13 @@ The basic idea is:
 
 1. Include this in your projects pom.xml:
 
-```
+```xml
 <dependency>
-	<groupId>com.mfluent.tools</groupId>
+	<groupId>com.yepher.jsondoc</groupId>
 	<artifactId>annotations</artifactId>
 </dependency>
-
 <dependency>
-	<groupId>com.mfluent.tools</groupId>
+	<groupId>com.yepher.jsondoc</groupId>
 	<artifactId>documentor</artifactId>
 </dependency>
 ```
@@ -108,7 +107,7 @@ The basic idea is:
 
 **Example:**
 
-```
+```java
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -127,7 +126,7 @@ public class CreateUserResponse extends ResponseBase {
 
 **Example:**
 
-```
+```java
 public class ClassListDriver extends ClassListDriverBase {
 
     ClassListDriver() {
