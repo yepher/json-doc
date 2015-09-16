@@ -96,10 +96,12 @@ The basic idea is:
 <dependency>
 	<groupId>com.yepher.jsondoc</groupId>
 	<artifactId>annotations</artifactId>
+	<version>0.0.2</version>
 </dependency>
 <dependency>
 	<groupId>com.yepher.jsondoc</groupId>
 	<artifactId>documentor</artifactId>
+	<version>0.0.2</version>
 </dependency>
 ```
 
