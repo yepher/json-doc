@@ -10,7 +10,7 @@ In additions to the GitHub issues project discussions JsonDoc are on Slack. The 
 
 * Browse to http://chidev.org/
 * Select [Slack Botton](https://chidev.herokuapp.com/) on the page
-* Join the #github_gsondoc channel and contribute to the conversation
+* Join the #github_json_doc channel and contribute to the conversation
 
 ## Example Output
 
