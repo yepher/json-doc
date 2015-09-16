@@ -14,7 +14,7 @@ In additions to the GitHub issues project discussions JsonDoc are on Slack. The 
 
 ## Example Output
 
-Json-doc will scan through a list of classes and create documentation based on included annotations. This way the code can be used as the source for your JSON REST API documentation. This is part of an actual output from the [sample](https://github.com/yepher/GsonDoc/tree/develop/code/json-doc/samples) application.
+Json-doc will scan through a list of classes and create documentation based on included annotations. This way the code can be used as the source for your JSON REST API documentation. This is part of an actual output from the [sample](https://github.com/yepher/json-doc/tree/develop/code/json-doc/samples) application.
 
 ++++++++++++++++
 
@@ -86,7 +86,7 @@ mvn clean install
 
 ## Usage
 
-For usage example see the [sample](https://github.com/yepher/GsonDoc/tree/develop/code/json-doc/samples) project in this repository.
+For usage example see the [sample](https://github.com/yepher/json-doc/tree/develop/code/json-doc/samples) project in this repository.
 
 The basic idea is:
 
