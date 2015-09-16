@@ -1,4 +1,4 @@
-package com.yepher.tools.protocol.samples.one;
+package com.yepher.jsondoc.samples.one;
 
 import lombok.Data;
 

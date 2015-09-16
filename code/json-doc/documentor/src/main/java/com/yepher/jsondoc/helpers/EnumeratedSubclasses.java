@@ -1,5 +1,5 @@
 
-package com.yepher.tools.protocol.helpers;
+package com.yepher.jsondoc.helpers;
 
 /**
  * an interface that must be implemented by base classes to be used with EnumeratedSubclassAdapterFactory (which is used with GSON)

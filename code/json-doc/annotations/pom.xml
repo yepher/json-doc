@@ -1,9 +1,31 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.yepher.tools</groupId>
-    <artifactId>json-doc</artifactId>
-    <version>1.0-SNAPSHOT</version>
-  </parent>
-  <artifactId>annotations</artifactId>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.yepher.jsondoc</groupId>
+		<artifactId>json-doc</artifactId>
+		<version>0.0.1</version>
+	</parent>
+	<artifactId>annotations</artifactId>
+	<packaging>jar</packaging>
+
+	<name>JSON Doc Annotation Library</name>
+	<description>Annotations used for documenting JSON objects</description>
+	<url>https://github.com/yepher/json-doc</url>
+
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:github.com/yepher/json-doc.git</connection>
+		<developerConnection>scm:git:github.com/yepher/json-doc.git</developerConnection>
+		<url>github.com/yepher/json-doc.git</url>
+	</scm>
+
+	
 </project>

@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.yepher.tools.protocol;
+package com.yepher.jsondoc;
 
 /**
  * interface for callbacks from Documentor to its driver

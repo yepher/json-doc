@@ -2,7 +2,7 @@
  * 
  */
 
-package com.yepher.tools.protocol.helpers;
+package com.yepher.jsondoc.helpers;
 
 import java.io.IOException;
 import java.lang.reflect.Method;

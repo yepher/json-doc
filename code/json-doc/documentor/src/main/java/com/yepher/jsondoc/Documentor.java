@@ -1,4 +1,4 @@
-package com.yepher.tools.protocol;
+package com.yepher.jsondoc;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -11,11 +11,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gson.annotations.SerializedName;
+import com.yepher.jsondoc.helpers.GsonHelper;
 import com.yepher.tools.protocol.annotations.Description;
 import com.yepher.tools.protocol.annotations.RequestPDU;
 import com.yepher.tools.protocol.annotations.ResponsePDU;
 import com.yepher.tools.protocol.annotations.RequestPDU.Method;
-import com.yepher.tools.protocol.helpers.GsonHelper;
 
 public class Documentor {
 

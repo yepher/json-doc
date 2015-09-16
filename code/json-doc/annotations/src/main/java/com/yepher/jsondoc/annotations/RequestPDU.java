@@ -1,5 +1,5 @@
 
-package com.yepher.tools.protocol.annotations;
+package com.yepher.jsondoc.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

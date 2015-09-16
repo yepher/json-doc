@@ -3,12 +3,14 @@
 
 
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.yepher.tools</groupId>
+	<groupId>com.yepher.jsondoc</groupId>
 	<artifactId>json-doc</artifactId>
 	<packaging>pom</packaging>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.0.1</version>
 	<name>json-doc</name>
-	<url>http://maven.apache.org</url>
+	<description>Tool to document POJOs using annotations.</description>
+	<url>https://github.com/yepher/json-doc</url>
+
 
 	<licenses>
 		<license>
@@ -19,15 +21,48 @@
 	</licenses>
 
 	<scm>
-		<url>git@github.com/yepher/GsonDoc.git</url>
-		<connection>scm:git:git@github.com/yepher/GsonDoc.git</connection>
-		<developerConnection>scm:git:git@github.com/yepher/GsonDoc.git</developerConnection>
+		<url>git@github.com/yepher/json-doc.git</url>
+		<connection>scm:git:git@github.com/yepher/json-doc.git</connection>
+		<developerConnection>scm:git:git@github.com/yepher/json-doc.git</developerConnection>
 	</scm>
 
 	<issueManagement>
 		<system>GitHub</system>
 		<url>https://github.com/yepher/GsonDoc/issues</url>
 	</issueManagement>
+
+	<developers>
+		<developer>
+			<id>yepher</id>
+			<name>Chris Wilson</name>
+			<email>github@yepher.com</email>
+			<url>https://github.com/yepher/json-doc</url>
+			<organization>Yepher</organization>
+			<organizationUrl>https://github.com/yepher/json-doc</organizationUrl>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>America/Chicago</timezone>
+			<properties>
+				<picUrl>http://0.gravatar.com/avatar/4090bd6eb4af1ba7bff5ecd7d17ac590?size=80</picUrl>
+			</properties>
+		</developer>
+		<developer>
+			<id>JimR</id>
+			<name>Jim</name>
+			<email></email>
+			<url></url>
+			<organization></organization>
+			<organizationUrl></organizationUrl>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>America/Chicago</timezone>
+		</developer>
+	</developers>
+
 
 	<prerequisites>
 		<maven>2.0.4</maven>
@@ -42,11 +77,6 @@
 	<build>
 		<pluginManagement>
 			<plugins>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-source-plugin</artifactId>
-					<version>2.4</version>
-				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
@@ -77,20 +107,34 @@
 							</additionalBuildcommands> -->
 					</configuration>
 				</plugin>
+
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-javadoc-plugin</artifactId>
-					<version>2.10.3</version>
+					<artifactId>maven-gpg-plugin</artifactId>
+					<version>1.5</version>
+					<executions>
+						<execution>
+							<id>sign-artifacts</id>
+							<phase>verify</phase>
+							<goals>
+								<goal>sign</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.1</version>
 					<configuration>
-						<show>public</show>
-						<nohelp>true</nohelp>
-						<author>true</author>
-						<version>true</version>
-						<use>true</use>
-						<windowtitle>JSON Documentor Java</windowtitle>
-						<doctitle><![CDATA[<h1>JSON Documentor Java</h1>]]></doctitle>
-						<bottom><![CDATA[<i>JSON Documentor</i>]]></bottom>
+						<source>1.7</source>
+						<target>1.7</target>
 					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-source-plugin</artifactId>
+					<version>2.4</version>
 					<executions>
 						<execution>
 							<id>attach-sources</id>
@@ -102,16 +146,33 @@
 				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-					<version>2.6</version>
-					<inherited>true</inherited>
+					<artifactId>maven-javadoc-plugin</artifactId>
+					<version>2.10.3</version>
+					<executions>
+						<execution>
+							<id>attach-javadocs</id>
+							<goals>
+								<goal>jar</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>org.sonatype.plugins</groupId>
+					<version>1.6.4</version>
+					<artifactId>nexus-staging-maven-plugin</artifactId>
+					<executions>
+						<execution>
+							<id>default-deploy</id>
+							<phase>deploy</phase>
+							<goals>
+								<goal>deploy</goal>
+							</goals>
+						</execution>
+					</executions>
 					<configuration>
-						<archive>
-							<addMavenDescriptor>false</addMavenDescriptor>
-							<manifest>
-								<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-							</manifest>
-						</archive>
+						<serverId>sonatype-nexus-staging</serverId>
+						<nexusUrl>https://oss.sonatype.org/</nexusUrl>
 					</configuration>
 				</plugin>
 			</plugins>
@@ -126,13 +187,13 @@
 			<dependency>
 				<groupId>com.yepher.tools</groupId>
 				<artifactId>annotations</artifactId>
-				<version>0.1-SNAPSHOT</version>
+				<version>0.0.1</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.yepher.tools</groupId>
 				<artifactId>documentor</artifactId>
-				<version>0.1-SNAPSHOT</version>
+				<version>0.0.1</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
@@ -167,6 +228,66 @@
 
 	</dependencies>
 
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
+	<profiles>
+		<profile>
+			<id>central</id>
+			<activation>
+				<property>
+					<name>performRelease</name>
+					<value>true</value>
+				</property>
+			</activation>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-javadoc-plugin</artifactId>
+						<version>2.9.1</version>
+						<configuration>
+							<quiet>true</quiet>
+							<nonavbar>true</nonavbar>
+							<notree>true</notree>
+							<nocomment>true</nocomment>
+							<nohelp>true</nohelp>
+						</configuration>
+						<executions>
+							<execution>
+								<id>attach-javadocs</id>
+								<goals>
+									<goal>jar</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-gpg-plugin</artifactId>
+						<version>1.4</version>
+						<executions>
+							<execution>
+								<id>sign-artifacts</id>
+								<phase>verify</phase>
+								<goals>
+									<goal>sign</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
 
 	<modules>
 		<module>annotations</module>

@@ -10,11 +10,11 @@ In additions to the GitHub issues project discussions JsonDoc are on Slack. The 
 
 * Browse to http://chidev.org/
 * Select [Slack Botton](https://chidev.herokuapp.com/) on the page
-* Join the #github_json_doc channel and contribute to the conversation
+* Join the #github_gsondoc channel and contribute to the conversation
 
 ## Example Output
 
-Json-doc will scan through a list of classes and create documentation based on included annotations. This way the code can be used as the source for your JSON REST API documentation. This is part of an actual output from the [sample](https://github.com/yepher/json-doc/tree/develop/code/json-doc/samples) application.
+Json-doc will scan through a list of classes and create documentation based on included annotations. This way the code can be used as the source for your JSON REST API documentation. This is part of an actual output from the [sample](https://github.com/yepher/GsonDoc/tree/develop/code/json-doc/samples) application.
 
 ++++++++++++++++
 
@@ -86,7 +86,7 @@ mvn clean install
 
 ## Usage
 
-For usage example see the [sample](https://github.com/yepher/json-doc/tree/develop/code/json-doc/samples) project in this repository.
+For usage example see the [sample](https://github.com/yepher/GsonDoc/tree/develop/code/json-doc/samples) project in this repository.
 
 The basic idea is:
 
@@ -94,12 +94,12 @@ The basic idea is:
 
 ```
 <dependency>
-	<groupId>com.yepher.tools</groupId>
+	<groupId>com.mfluent.tools</groupId>
 	<artifactId>annotations</artifactId>
 </dependency>
 
 <dependency>
-	<groupId>com.yepher.tools</groupId>
+	<groupId>com.mfluent.tools</groupId>
 	<artifactId>documentor</artifactId>
 </dependency>
 ```
@@ -203,6 +203,13 @@ public class ClassListDriver extends ClassListDriverBase {
 	*  https://www.websequencediagrams.com/
 	*  http://www.itu.int/rec/T-REC-Z.120-201102-I/en
 
+## Release Stuff:
+
+* mvn clean install source:jar javadoc:jar package gpg:sign deploy -Dgpg.passphrase=PASSPHRASE
+* https://oss.sonatype.org/#stagingRepositories
+	* close
+	* If verification is successful
+	* release
 
 
 ## Related Projects

@@ -1,5 +1,5 @@
 
-package com.yepher.tools.protocol.helpers;
+package com.yepher.jsondoc.helpers;
 
 /**
  * interface for enum's that identify subclasses for use with EnumeratedSubclassAdapterFactory (which is used with GSON)

@@ -1,5 +1,5 @@
 
-package com.yepher.tools.protocol.helpers;
+package com.yepher.jsondoc.helpers;
 
 import java.io.Reader;
 import java.lang.reflect.Type;
