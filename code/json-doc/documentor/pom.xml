@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.yepher.jsondoc</groupId>
 		<artifactId>json-doc</artifactId>
-		<version>0.0.2</version>
+		<version>0.0.3-SNAPSHOT</version>
 	</parent>
 	<artifactId>documentor</artifactId>
 	<name>json-doc documentor</name>
