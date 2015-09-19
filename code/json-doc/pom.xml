@@ -6,7 +6,7 @@
 	<groupId>com.yepher.jsondoc</groupId>
 	<artifactId>json-doc</artifactId>
 	<packaging>pom</packaging>
-	<version>0.0.3-SNAPSHOT</version>
+	<version>0.0.4-SNAPSHOT</version>
 	<name>json-doc</name>
 	<description>Tool to document POJOs using annotations.</description>
 	<url>https://github.com/yepher/json-doc</url>
@@ -187,13 +187,13 @@
 			<dependency>
 				<groupId>com.yepher.jsondoc</groupId>
 				<artifactId>annotations</artifactId>
-				<version>0.0.3-SNAPSHOT</version>
+				<version>0.0.4-SNAPSHOT</version>
 			</dependency>
 
 			<dependency>
 				<groupId>com.yepher.jsondoc</groupId>
 				<artifactId>documentor</artifactId>
-				<version>0.0.3-SNAPSHOT</version>
+				<version>0.0.4-SNAPSHOT</version>
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
