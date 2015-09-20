@@ -1096,13 +1096,21 @@ public class ObjcEmitter {
 						emitLine("       // handle enum @\"" + key + "\":[self " + fieldName + "],");
 						continue;
 					} else if (field.getType() == String.class) {
-						emitLine("       @\"" + key + "\":[self " + fieldName+ "],");
-					} if (field.getType() == Boolean.class) {
+						emitLine("       @\"" + key + "\":[self " + fieldName + "],");
+					} else if (field.getType() == Integer.class) {
+						emitLine("       @\"" + key + "\":[self " + fieldName + "],");
+					} else if (field.getType() == Long.class) {
+						emitLine("       @\"" + key + "\":[self " + fieldName + "],");
+					} else if (field.getType() == Boolean.class) {
 						emitLine("       @\"" + key + "\":[NSNumber numberWithInteger:(self." + fieldName + ")],");
+					} else if (field.getType() == List.class) {
+						emitLine("       @\"" + key + "\":[self " + fieldName + "],");
+					} else if (field.getType() == Map.class) {
+						emitLine("       @\"" + key + "\":[self " + fieldName + "],");
 					} else if (field.getType().getName().contains("com.sparkpost")) {
 						emitLine("       @\"" + key + "\":[[self " + fieldName + "] asDictionary],");
 					} else {
-						
+						System.err.println("ERROR: Serializer unhandled field: " + field);
 					}
 				}
 			}
