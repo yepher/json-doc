@@ -734,8 +734,8 @@ public class ObjcEmitter {
 		}
 	}
 
-	public void writeHeaderFile(Class<?> clazz) {
-		if (clazz.getSuperclass().getClass().isEnum()) {
+	public void writeHeaderFile(Class<?> cls) {
+		if (cls.getSuperclass().getClass().isEnum()) {
 			return;
 		}
 
@@ -743,13 +743,13 @@ public class ObjcEmitter {
 		output.append(driver.getBanner());
 
 		String prefix = driver.getClassPrefix();
-		String className = prefix + clazz.getSimpleName();
+		String className = prefix + cls.getSimpleName();
 		driver.printToConsole("documenting: " + driver.getClassPrefix() + className);
 
 		emitLine(driver.getBanner());
 
 		String mySuperClass = "";
-		Class<?> superclass = clazz.getSuperclass();
+		Class<?> superclass = cls.getSuperclass();
 		if (!superclass.getSimpleName().equals("Object")) {
 			mySuperClass = prefix + superclass.getSimpleName();
 		}
@@ -761,24 +761,14 @@ public class ObjcEmitter {
 			emitLine("#import \"" + mySuperClass + ".h\"\n");
 		}
 
-		{
-			Description descriptionAnnotation = clazz.getAnnotation(Description.class);
-			if (descriptionAnnotation != null) {
-				String description = descriptionAnnotation.value();
-				if (description != null) {
-					emitLine("\n/*\n" + description + "\n*/");
-					emitLine();
-				}
-			}
-		}
-
-		// Emit Imports
-		List<Field> fields = getAllFields(clazz);
+		/**
+		 * Emit Other Imports
+		 **/
+		List<Field> fields = getAllFields(cls);
 		for (Field field : fields) {
 			if (Modifier.isFinal(field.getModifiers())) {
 				continue;
 			}
-
 			if (!field.getType().isPrimitive()) {
 				if (field.getType().isEnum()) {
 					continue;
@@ -788,7 +778,23 @@ public class ObjcEmitter {
 			}
 		}
 		
-		// Emit Class Wrapper
+		/**
+		 * Emit class level comment if there is one
+		 */
+		{
+			Description descriptionAnnotation = cls.getAnnotation(Description.class);
+			if (descriptionAnnotation != null) {
+				String description = descriptionAnnotation.value();
+				if (description != null) {
+					emitLine("\n/*\n" + description + "\n*/");
+					emitLine();
+				}
+			}
+		}
+		
+		/**
+		 * Emit Class Wrapper
+		 */
 		emit("\n" + "@interface " + className);
 		if (mySuperClass != null && mySuperClass.length() > 0) {
 			emit(" : " + mySuperClass);
@@ -799,9 +805,14 @@ public class ObjcEmitter {
 		emitLine("  <SPSendableMessage, SPReceivableMessage>\n");
 
 		for (Field field : fields) {
+			System.out.println("Field: " + field + " mods: " + field.getModifiers());
 			if (Modifier.isFinal(field.getModifiers())) {
 				continue;
+			}  else if (!field.getDeclaringClass().equals(cls)) {
+				// Ignore fields not directly in this class
+				continue;
 			}
+
 			String serializedName = null;
 			Annotation[] annotations = field.getAnnotations();
 			for (Annotation annotation : annotations) {
@@ -810,6 +821,9 @@ public class ObjcEmitter {
 				}
 			}
 
+			/**
+			 * Member Comment
+			 */
 			String description = "";
 			Description descriptionAnnotation = field.getAnnotation(Description.class);
 			if (descriptionAnnotation != null) {
@@ -819,13 +833,20 @@ public class ObjcEmitter {
 				emitLine("*/");
 			}
 
+			// ObjC reserves the variable/method description so it must be renamed if it exists
 			String fieldName = field.getName();
 			if (fieldName.equals("description")) {
 				fieldName = "desc";
-				serializedName = "description";
+				if (serializedName == null || serializedName.length() == 0) {
+					serializedName = "description";
+				}
+			} else if (fieldName.equals("id")) {
+				fieldName = cls.getSimpleName().toLowerCase() + "Id";
+				if (serializedName == null || serializedName.length() == 0) {
+					serializedName = "id";
+				}
 			}
 
-			
 			if (serializedName != null) {
 				emitLine("// @SerializedName(\"" + serializedName + "\")");
 			}
@@ -839,7 +860,7 @@ public class ObjcEmitter {
 				} else if (field.getType() == boolean.class) {
 					emitLine("@property BOOL " + fieldName + ";" + "\n");
 				} else {
-					throw new IllegalStateException("Unhandled primitive type: " + field.getType() + " for class " + clazz.getName());
+					throw new IllegalStateException("Unhandled primitive type: " + field.getType() + " for class " + cls.getName());
 				}
 			} else {
 				if (field.getType().isEnum()) {
@@ -861,7 +882,7 @@ public class ObjcEmitter {
 				} else if (field.getType() == Map.class) {
 					emitLine("@property NSDictionary* " + fieldName + ";" + "\n");
 				} else {
-					throw new IllegalStateException("Unknown object Type: " + field.getType() + " in class " + clazz.getName());
+					throw new IllegalStateException("Unknown object Type: " + field.getType() + " in class " + cls.getName());
 				}
 			}
 		}
@@ -925,23 +946,30 @@ public class ObjcEmitter {
 				
 				if (fieldName.equals("description")) {
 					fieldName = "desc";
-					serializedName = "description";
+					if (serializedName == null || serializedName.length() == 0) {
+						serializedName = "description";
+					}
+				} else if (fieldName.equals("id")) {
+					fieldName = cls.getSimpleName().toLowerCase() + "Id";
+					if (serializedName == null || serializedName.length() == 0) {
+						serializedName = "id";
+					}
 				}
 				
-				String description = "";
-				Description descriptionAnnotation = field.getAnnotation(Description.class);
-				if (descriptionAnnotation != null) {
-					description = descriptionAnnotation.value();
-					emitLine("    /*");
-					emitLine("     " + description);
-					emitLine("    */");
-				}
+//				String description = "";
+//				Description descriptionAnnotation = field.getAnnotation(Description.class);
+//				if (descriptionAnnotation != null) {
+//					description = descriptionAnnotation.value();
+//					emitLine("    /*");
+//					emitLine("     " + description);
+//					emitLine("    */");
+//				}
 				
 				if (field.getType().isPrimitive()) {
 					if (field.getType() == int.class) {
-						emitLine("    self." + fieldName + " = [[dictionary objectForKey:@\"" + key + "\"] intValue];\n");
+						emitLine("    self." + fieldName + " = [[dictionary objectForKey:@\"" + key + "\"] integerValue];\n");
 					} else if (field.getType() == long.class) {
-						emitLine("    self." + fieldName + " = [[dictionary objectForKey:@\"" + key + "\"] intValue];\n");
+						emitLine("    self." + fieldName + " = [[dictionary objectForKey:@\"" + key + "\"] integerValue];\n");
 					} else if (field.getType() == boolean.class) {
 						emitLine("    self." + fieldName + " = [[dictionary objectForKey:@\"" + key + "\"] boolValue];\n");
 					} else {
@@ -953,7 +981,8 @@ public class ObjcEmitter {
 					} else if (field.getType() == Boolean.class) {
 						emitLine("    self." + fieldName + " = [[dictionary objectForKey:@\"" + key + "\"] boolValue];\n");
 					} else if (field.getType() == Integer.class) {
-						emitLine("    // TODO: 'Integer' self." + fieldName + " = [[dictionary objectForKey:@\"" + key + "\"] boolValue];\n");
+						emitLine("    self." + fieldName + " = [NSNumber numberWithFloat:[[dictionary objectForKey:@\"" + key + "\"] integerValue]];\n");
+//						emitLine("    self." + fieldName + " = [[dictionary objectForKey:@\"" + key + "\"] integerValue];\n");
 					} else if (field.getType() == Long.class) {
 						emitLine("    self." + fieldName + " = [[dictionary objectForKey:@\"" + key + "\"] LongValue];\n");
 					} else if (field.getType() == Map.class) {
@@ -973,11 +1002,12 @@ public class ObjcEmitter {
 					    self.contacts = mfpContacts;
 					    return [super initWithDictionary:dictionary];
 						 */
-						emitLine("    // TODO: 'List' self." + fieldName + " = [[dictionary objectForKey:@\"" + key + "\"] boolValue];\n");
+						emitLine("    self." + fieldName + " = [dictionary objectForKey:@\"" + key + "\"];\n");
 					} else if (driver.isInPackage(field.getType().getName())) {
-						emitLine("    // TODO: self." + fieldName + " = [dictionary objectForKey:@\"" + key + "\"];\n");
+;						String fieldClassName = prefix + field.getType().getSimpleName();
+						emitLine("    self." + fieldName + " = [[" + fieldClassName +  " alloc] initWithDictionary:[dictionary objectForKey:@\"" + key + "\"]];\n");
 					} else if (field.getType() == Object.class) {
-						emitLine("    // TODO: 'Object' self." + fieldName + " = [[dictionary objectForKey:@\"" + key + "\"] boolValue];\n");
+						emitLine("    // TODO: 'Object' self." + fieldName + " = [dictionary objectForKey:@\"" + key + "\"];\n");
 					}  else {
 						throw new IllegalStateException("Unknown Type: " + field.getType().getName() + " in class " + cls.getName());
 					}
@@ -1035,28 +1065,42 @@ public class ObjcEmitter {
 						serializedName = ((SerializedName) annotation).value();
 					}
 				}
+				
+
+				String fieldName = field.getName();
+				String key = serializedName != null ? serializedName : fieldName;
+				if (fieldName.equals("description")) {
+					fieldName = "desc";
+					if (serializedName == null || serializedName.length() == 0) {
+						serializedName = "description";
+					}
+				} else if (fieldName.equals("id")) {
+					fieldName = cls.getSimpleName().toLowerCase() + "Id";
+					if (serializedName == null || serializedName.length() == 0) {
+						serializedName = "id";
+					}
+				}
  
-				String key = serializedName != null ? serializedName : field.getName();
 				if (field.getType().isPrimitive()) {
 					if (field.getType() == int.class) {
-						emitLine("       @\"" + key + "\":[NSNumber numberWithInteger:self." + field.getName() + "],");
+						emitLine("       @\"" + key + "\":[NSNumber numberWithInteger:self." + fieldName + "],");
 					} else if (field.getType() == boolean.class) {
-						emitLine("       @\"" + key + "\":[NSNumber numberWithInteger:(self." + field.getName() + "? 1 : 0)],");
+						emitLine("       @\"" + key + "\":[NSNumber numberWithInteger:(self." +fieldName + "? 1 : 0)],");
 					} else if (field.getType() == long.class) {
-						emitLine("       @\"" + key + "\":[NSNumber numberWithInteger:self." + field.getName() + "],");
+						emitLine("       @\"" + key + "\":[NSNumber numberWithInteger:self." + fieldName + "],");
 					} else {
-						throw new IllegalStateException("Unhandled primitive type: " + field.getType() + " for class " + cls.getName());
+						throw new IllegalStateException("Unhandled primitive type: " + fieldName + " for class " + cls.getName());
 					}
 				} else {
 					if (field.getType().isEnum()) {
-						emitLine("       // handle enum @\"" + key + "\":[self " + field.getName() + "],");
+						emitLine("       // handle enum @\"" + key + "\":[self " + fieldName + "],");
 						continue;
 					} else if (field.getType() == String.class) {
-						emitLine("       @\"" + key + "\":[self " + field.getName() + "],");
+						emitLine("       @\"" + key + "\":[self " + fieldName+ "],");
 					} if (field.getType() == Boolean.class) {
-						emitLine("       @\"" + key + "\":[NSNumber numberWithInteger:(self." + field.getName() + ")],");
+						emitLine("       @\"" + key + "\":[NSNumber numberWithInteger:(self." + fieldName + ")],");
 					} else if (field.getType().getName().contains("com.sparkpost")) {
-						emitLine("       @\"" + key + "\":[[self " + field.getName() + "] asDictionary],");
+						emitLine("       @\"" + key + "\":[[self " + fieldName + "] asDictionary],");
 					} else {
 						
 					}
