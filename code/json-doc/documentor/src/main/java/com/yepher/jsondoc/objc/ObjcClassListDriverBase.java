@@ -1,5 +1,6 @@
 package com.yepher.jsondoc.objc;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.util.List;
@@ -63,7 +64,10 @@ public abstract class ObjcClassListDriverBase implements ObjcEmitterDriver {
 	
 	protected void run(String[] args) throws Exception {
 		console = System.out;
-
+		
+		// Make sure output path exists
+		new File(getOutputPath()).mkdirs();
+		
 		ObjcEmitter documentor = new ObjcEmitter();
 		documentor.setDriver(this);
 
